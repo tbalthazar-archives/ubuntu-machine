@@ -1,4 +1,36 @@
 namespace :machine do
+
+  desc "Change the root password, create a new user and allow him to sudo and to SSH"
+  task :initial_setup do
+    set :user_to_create , user
+    set :user, 'root'
+    
+    
+    run "passwd", :pty => true do |ch, stream, data|
+      if data =~ /Enter new UNIX password/ || data=~ /Retype new UNIX password:/
+        # prompt, and then send the response to the remote process
+        ch.send_data(Capistrano::CLI.password_prompt(data) + "\n")
+      else
+        # use the default handler for all other text
+        Capistrano::Configuration.default_io_proc.call(ch, stream, data)
+      end
+    end
+    
+    run "adduser #{user_to_create}", :pty => true do |ch, stream, data|
+      if data =~ /Enter new UNIX password/ || data=~ /Retype new UNIX password:/ || data=~/\[\]\:/ || data=~/\[y\/N\]/
+        # prompt, and then send the response to the remote process
+        ch.send_data(Capistrano::CLI.password_prompt(data) + "\n")
+      else
+        # use the default handler for all other text
+        Capistrano::Configuration.default_io_proc.call(ch, stream, data)
+      end
+    end
+    
+    run "echo '#{user_to_create} ALL=(ALL)ALL' >> /etc/sudoers"
+    run "echo 'AllowUsers #{user_to_create}' >> /etc/ssh/sshd_config"
+    run "/etc/init.d/ssh reload"
+  end
+  
   task :configure do
     ssh.setup
     iptables.configure
@@ -9,6 +41,7 @@ namespace :machine do
     mysql.install
     apache.install
     ruby.install
+    gems.install_rubygems
     ruby.install_enterprise
     ruby.install_passenger
     git.install

@@ -25,7 +25,35 @@ namespace :ruby do
     sudo "ln -s /opt/#{ruby_enterprise_version} /opt/ruby-enterprise" 
 
     # create this alias so the passenger-install-apache2-module script will find the rake command
-    sudo "ln -s /opt/ruby-enterprise/bin/rake /usr/bin/rake"
+    # sudo "ln -s /opt/ruby-enterprise/bin/rake /usr/bin/rake"
+    
+    # put render("passenger_ree.conf", binding), "/home/#{user}/passenger.conf"
+    # sudo "a2dismod passenger"
+    # sudo "mv /home/#{user}/passenger.conf /etc/apache2/mods-available/"
+    # sudo "a2enmod passenger"
+    # apache.force_reload
+  end
+  
+  desc "Install Phusion Passenger"
+  task :useless_install_passenger, :roles => :app do
+    # because  passenger-install-apache2-module do not find the rake installed by REE
+    sudo "gem install rake"
+    
+    sudo "apt-get install apache2-mpm-prefork -y"
+    sudo "aptitude install libapr1-dev -y"
+    sudo "apt-get install apache2-prefork-dev -y"
+
+    sudo "/usr/bin/gem install passenger"
+    run "echo -en '\n\n\n\n\n' | sudo passenger-install-apache2-module"
+
+    put render("passenger.load", binding), "/home/#{user}/passenger.load"
+    put render("passenger.conf", binding), "/home/#{user}/passenger.conf"
+
+    sudo "mv /home/#{user}/passenger.load /etc/apache2/mods-available/"
+    sudo "mv /home/#{user}/passenger.conf /etc/apache2/mods-available/"
+
+    sudo "a2enmod passenger"
+    apache.force_reload
   end
   
   desc "Install Phusion Passenger"
@@ -41,15 +69,18 @@ namespace :ruby do
 
 
     # run 'export PATH="$PATH:/opt/' + ruby_enterprise_version + '/bin"'
-    sudo "/opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module", :pty => true do |ch, stream, data|
-      if data =~ /Press\sEnter\sto\scontinue/ || data =~ /Press\sENTER\sto\scontinue/
-        # prompt, and then send the response to the remote process
-        ch.send_data(Capistrano::CLI.password_prompt("Press Enter to continue: ") + "\n")
-      else
-        # use the default handler for all other text
-        Capistrano::Configuration.default_io_proc.call(ch, stream, data)
-       end
-    end
+    # sudo "/opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module", :pty => true do |ch, stream, data|
+    #   if data =~ /Press\sEnter\sto\scontinue/ || data =~ /Press\sENTER\sto\scontinue/
+    #     # prompt, and then send the response to the remote process
+    #     ch.send_data(Capistrano::CLI.password_prompt("Press Enter to continue: ") + "\n")
+    #   else
+    #     # use the default handler for all other text
+    #     Capistrano::Configuration.default_io_proc.call(ch, stream, data)
+    #    end
+    # end
+    
+    run "echo -en '\n\n\n\n\n' | sudo /opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module"
+    
     
     # sudo "/opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module" #, :pty => true
 
@@ -57,7 +88,7 @@ namespace :ruby do
     put render("passenger.conf", binding), "/home/#{user}/passenger.conf"
 
     sudo "mv /home/#{user}/passenger.load /etc/apache2/mods-available/"
-    sudo "mv /home/#{user}/passenger.config /etc/apache2/mods-available/"
+    sudo "mv /home/#{user}/passenger.conf /etc/apache2/mods-available/"
 
     sudo "a2enmod passenger"
     apache.force_reload
