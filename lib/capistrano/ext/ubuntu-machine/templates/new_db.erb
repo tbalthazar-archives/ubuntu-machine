@@ -1,0 +1,5 @@
+CREATE DATABASE  `<%= db_name %>` DEFAULT CHARACTER SET utf8 COLLATE utf8_general_ci;
+CREATE USER '<%= db_username %>'@'localhost' IDENTIFIED BY  '<%= db_user_password %>';
+GRANT USAGE ON * . * TO  '<%= db_username %>'@'localhost' IDENTIFIED BY  '<%= db_user_password %>' WITH MAX_QUERIES_PER_HOUR 0 MAX_CONNECTIONS_PER_HOUR 0 MAX_UPDATES_PER_HOUR 0 MAX_USER_CONNECTIONS 0 ;
+GRANT ALL PRIVILEGES ON  `<%= db_name %>` . * TO  '<%= db_username %>'@'localhost' WITH GRANT OPTION ;
+FLUSH PRIVILEGES ;
