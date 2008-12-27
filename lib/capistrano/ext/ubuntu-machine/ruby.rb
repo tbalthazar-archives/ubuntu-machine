@@ -44,7 +44,7 @@ namespace :ruby do
     sudo "/opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module", :pty => true do |ch, stream, data|
       if data =~ /Press\sEnter\sto\scontinue/ || data =~ /Press\sENTER\sto\scontinue/
         # prompt, and then send the response to the remote process
-        ch.send_data(Capistrano::CLI.password_prompt("Answer: ") + "\n")
+        ch.send_data(Capistrano::CLI.password_prompt("Press Enter to continue: ") + "\n")
       else
         # use the default handler for all other text
         Capistrano::Configuration.default_io_proc.call(ch, stream, data)
@@ -54,7 +54,7 @@ namespace :ruby do
     # sudo "/opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module" #, :pty => true
 
     put render("passenger.load", binding), "/home/#{user}/passenger.load"
-    put render("passenger.config", binding), "/home/#{user}/passenger.config"
+    put render("passenger.conf", binding), "/home/#{user}/passenger.conf"
 
     sudo "mv /home/#{user}/passenger.load /etc/apache2/mods-available/"
     sudo "mv /home/#{user}/passenger.config /etc/apache2/mods-available/"

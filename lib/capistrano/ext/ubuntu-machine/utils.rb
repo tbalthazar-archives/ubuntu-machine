@@ -16,11 +16,6 @@ namespace :utils do
     run "df -h /"
   end
 
-  desc "Show the amount of free disk space."
-  task :disk_space, :roles => :gateway do
-    run "df -h /"
-  end
-
   desc "Display amount of free and used memory in the system."
   task :free, :roles => :gateway do
     run "free -m"
