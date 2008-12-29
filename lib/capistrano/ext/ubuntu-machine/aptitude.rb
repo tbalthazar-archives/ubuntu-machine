@@ -39,7 +39,7 @@ namespace :aptitude do
     sudo 'aptitude safe-upgrade -y', :pty => true do |ch, stream, data|
       if data =~ /^\*\*\*\sissue/
         # prompt, and then send the response to the remote process
-        ch.send_data(Capistrano::CLI.password_prompt("Answer: ") + "\n")
+        ch.send_data(Capistrano::CLI.password_prompt(data) + "\n")
       else
         # use the default handler for all other text
         Capistrano::Configuration.default_io_proc.call(ch, stream, data)

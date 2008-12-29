@@ -15,7 +15,7 @@ namespace :ruby do
     sudo "apt-get install libssl-dev -y"
     
     run "test ! -d /opt/#{ruby_enterprise_version}"
-    run "wget -q http://files.rubyforge.mmmultiworks.com/emm-ruby/#{ruby_enterprise_version}.tar.gz"
+    run "curl -LO http://rubyforge.org/frs/download.php/48623/#{ruby_enterprise_version}.tar.gz"
     run "tar xzvf #{ruby_enterprise_version}.tar.gz"
     run "rm #{ruby_enterprise_version}.tar.gz"
     sudo "./#{ruby_enterprise_version}/installer --auto /opt/#{ruby_enterprise_version}"
@@ -34,7 +34,7 @@ namespace :ruby do
     # apache.force_reload
   end
   
-  desc "Install Phusion Passenger"
+  desc "USELESS Install Phusion Passenger"
   task :useless_install_passenger, :roles => :app do
     # because  passenger-install-apache2-module do not find the rake installed by REE
     sudo "gem install rake"
@@ -58,6 +58,9 @@ namespace :ruby do
   
   desc "Install Phusion Passenger"
   task :install_passenger, :roles => :app do
+    # because  passenger-install-apache2-module do not find the rake installed by REE
+    sudo "gem install rake"
+
     sudo "apt-get install apache2-mpm-prefork -y"
     sudo "aptitude install libapr1-dev -y"
     sudo "apt-get install apache2-prefork-dev -y"
