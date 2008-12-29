@@ -114,12 +114,5 @@ namespace :apache do
       sudo "rm -Rf /home/#{user}/websites/#{server_name}"
       reload
     end
-  end
-  
-  # task :capify_website, :roles => :web do
-  #   server_name = Capistrano::CLI.ui.ask("Server name you want to capify : ")
-  #   base_path = "/home/#{user}/websites/#{server_name}"
-  #   run "mv #{base_path}/public #{base_path}/public-org"
-  #   run "ln -s #{base_path}/cap/current/public #{base_path}/public"
-  # end
+  end  
 end

@@ -45,5 +45,6 @@ namespace :machine do
     ruby.install_enterprise
     ruby.install_passenger
     git.install
+    php.install
   end
 end

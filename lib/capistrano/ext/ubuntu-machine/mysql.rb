@@ -23,7 +23,7 @@ namespace :mysql do
     sudo "mysqldump -u root -p #{database} > #{database}.sql", :pty => true do |ch, stream, data|
       if data =~ /Enter\spassword/
         # prompt, and then send the response to the remote process
-        ch.send_data(Capistrano::CLI.password_prompt("mysql password: ") + "\n")
+        ch.send_data(Capistrano::CLI.password_prompt(data) + "\n")
       else
         # use the default handler for all other text
         Capistrano::Configuration.default_io_proc.call(ch, stream, data)
@@ -46,27 +46,7 @@ namespace :mysql do
     put render("new_db", binding), create_db_tmp_file
     run "mysql -u root -p#{db_root_password} < #{create_db_tmp_file}"
         
-    # sudo "mysqladmin -u root -p create #{database}", :pty => true do |ch, stream, data|
-    #   if data =~ /Enter\spassword/
-    #     # prompt, and then send the response to the remote process
-    #     ch.send_data(Capistrano::CLI.password_prompt("mysql password: ") + "\n")
-    #   else
-    #     # use the default handler for all other text
-    #     Capistrano::Configuration.default_io_proc.call(ch, stream, data)
-    #    end
-    # end
-    
     run "mysql -u root -p#{db_root_password} #{db_name} < #{file}"
-    # sudo "mysql -u root -p #{db_name} < #{file}", :pty => true do |ch, stream, data|
-    #   if data =~ /Enter\spassword/
-    #     # prompt, and then send the response to the remote process
-    #     ch.send_data(Capistrano::CLI.password_prompt("mysql password: ") + "\n")
-    #   else
-    #     # use the default handler for all other text
-    #     Capistrano::Configuration.default_io_proc.call(ch, stream, data)
-    #    end
-    # end
-    
     run "rm #{file} #{create_db_tmp_file}"
   end
 

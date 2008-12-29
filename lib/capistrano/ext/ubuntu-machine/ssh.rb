@@ -27,7 +27,6 @@ namespace :ssh do
     run "chmod 700 ~/.ssh"
 
     authorized_keys = ssh_options[:keys].collect { |key| File.read("#{key}.pub") }.join("\n")
-    # OVH uses authorized_keys_2 insted of authorized_keys : http://guides.ovh.com/InstallClefOVH
     put authorized_keys, "./.ssh/authorized_keys2", :mode => 0600
   end
   
