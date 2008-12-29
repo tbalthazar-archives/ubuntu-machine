@@ -7,7 +7,7 @@ namespace :ssh do
   task :setup, :roles => :gateway do
     upload_keys
     configure_sshd
-    install_ovh_ssh_key
+    install_ovh_ssh_key if ["ovh-rps", "ovh-dedie"].include?(hosting_provider)
     reload
   end
   

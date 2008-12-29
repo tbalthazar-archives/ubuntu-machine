@@ -26,8 +26,10 @@
 #
 -A INPUT -p tcp -m state --state NEW --dport <%= ssh_options[:port] %> -j ACCEPT
 
+<% if hosting_provider=="ovh-rps" %>
 # allow packets from SAN
 -A OUTPUT -p tcp --dport 3260 -j ACCEPT
+<% end %>
 
 # Allow ping
 -A INPUT -p icmp -m icmp --icmp-type 8 -j ACCEPT

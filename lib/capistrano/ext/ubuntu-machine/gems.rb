@@ -1,13 +1,13 @@
 namespace :gems do
   desc "Install RubyGems"
   task :install_rubygems, :roles => :app do
-    run "curl -LO http://rubyforge.org/frs/download.php/45905/rubygems-1.3.1.tgz"
-    run "tar xvzf rubygems-1.3.1.tgz"
-    run "cd rubygems-1.3.1 && sudo ruby setup.rb"
+    run "curl -LO http://rubyforge.org/frs/download.php/45905/rubygems-#{rubygem_version}.tgz"
+    run "tar xvzf rubygems-#{rubygem_version}.tgz"
+    run "cd rubygems-#{rubygem_version} && sudo ruby setup.rb"
     sudo "ln -s /usr/bin/gem1.8 /usr/bin/gem"
     sudo "gem update"
     sudo "gem update --system"
-    run "rm -Rf rubygems-1.3.1*"
+    run "rm -Rf rubygems-#{rubygem_version}*"
   end
   
   desc "List gems on remote server"
