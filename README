@@ -1,19 +1,2 @@
-== before
-
-= create a new user, allow him to use sudo, allow him to connect through SSH
-1/ ssh as root and change password
-	# passwd
-2/ add a new user
-	# adduser demo
-3/ allow the new user to run sudo
-	# vi /etc/sudoers 
-	# add : 
-	# 	demo ALL=(ALL)ALL 
-	# at the end of the file
-4/ allow the new user to connect through SSH
-	# vi /etc/ssh/sshd_config
-	# add :
-	#	AllowUsers demo
-	# at the end of the file
-5/ reload SSH
-	# /etc/init.d/ssh reload
+view doc here :
+http://suitmymind.github.com/ubuntu-machine

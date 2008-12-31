@@ -1,10 +1,10 @@
 Gem::Specification.new do |s|
   s.name     = "ubuntu-machine"
-  s.version  = "0.0.1"
-  s.date     = "2008-09-26"
+  s.version  = "0.0.2"
+  s.date     = "2008-09-31"
   s.summary  = "Capistrano recipes for setting up and deploying to a Ubuntu Machine"
   s.email    = "thomas@suitmymind.com"
-  s.homepage = "http://github.com/suitmymind/ubuntu-machine"
+  s.homepage = "http://suitmymind.github.com/ubuntu-machine"
   s.description = "Capistrano recipes for setting up and deploying to a Ubuntu Machine"
   s.has_rdoc = false
   s.authors  = ["Thomas Balthazar"]
