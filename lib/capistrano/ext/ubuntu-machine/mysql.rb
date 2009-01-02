@@ -57,4 +57,13 @@ namespace :mysql do
     sudo "aptitude install -y libmysql-ruby1.8"
     run "mysqladmin -u root password #{db_root_password}"
   end
+  
+  desc "Ask for a MySQL user and change his password"
+  task :change_password, :roles => :db do
+    user_to_update = Capistrano::CLI.ui.ask("Name of the MySQL user whose you want to update the password : ")
+    old_password = Capistrano::CLI.ui.ask("Old password for #{user_to_update} : ")
+    new_password = Capistrano::CLI.ui.ask("New password for #{user_to_update} : ")
+    
+    run "mysqladmin -u #{user_to_update} -p#{old_password} password \"#{new_password}\""
+  end
 end
