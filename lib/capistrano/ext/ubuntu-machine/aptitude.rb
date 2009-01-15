@@ -36,6 +36,7 @@ namespace :aptitude do
     # By default, OVH replace the original /etc/issue. The safe_upgrade will then ask \
     # if it must overwrite this file, since it has been modified by OVH. \
     # data =~ /^\*\*\*\sissue/ looks for the interactive prompt to enable you to answer
+    sudo 'aptitude hold console-setup -y'
     sudo 'aptitude safe-upgrade -y', :pty => true do |ch, stream, data|
       if data =~ /^\*\*\*\sissue/
         # prompt, and then send the response to the remote process

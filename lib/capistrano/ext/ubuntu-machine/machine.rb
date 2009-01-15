@@ -17,7 +17,7 @@ namespace :machine do
     end
     
     run "adduser #{user_to_create}", :pty => true do |ch, stream, data|
-      if data =~ /Enter new UNIX password/ || data=~ /Retype new UNIX password:/ || data=~/\[\]\:/ || data=~/\[y\/N\]/
+      if data =~ /Enter new UNIX password/ || data=~ /Retype new UNIX password:/ || data=~/\[\]\:/ || data=~/\[y\/N\]/i
         # prompt, and then send the response to the remote process
         ch.send_data(Capistrano::CLI.password_prompt(data) + "\n")
       else
