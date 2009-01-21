@@ -20,5 +20,19 @@ namespace :utils do
   task :free, :roles => :gateway do
     run "free -m"
   end
+
+  desc "Display passenger status information."
+  task :passenger_status => :gateway do
+    sudo "passenger-status"
+  end
+
+  desc "Display passenger memory usage information."
+  task :passenger_memory => :gateway do
+    sudo "passenger-memory-stats"
+  end  
+
+  desc "Activate Phusion Passenger Enterprise Edition."
+  task :passenger_enterprise => :gateway do
+    sudo "passenger-make-enterprisey"
   
 end
