@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name     = "ubuntu-machine"
-  s.version  = "0.3.1"
+  s.version  = "0.3.1.1"
   s.date     = "2009-01-18"
   s.summary  = "Capistrano recipes for setting up and deploying to a Ubuntu Machine"
   s.email    = "thomas@suitmymind.com"
