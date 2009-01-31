@@ -39,14 +39,17 @@ namespace :mysql do
     db_name = Capistrano::CLI.ui.ask("Which database should we create: ")
     db_username = Capistrano::CLI.ui.ask("Which database username should we create: ")
     db_user_password = Capistrano::CLI.ui.ask("Choose a password for the new database username: ")
-    file = Capistrano::CLI.ui.ask("Which database file should we import (it must be located in #{default_local_files_path}): ")
-    upload "#{default_local_files_path}/#{file}", "#{file}"
-
+    file_to_upload = Capistrano::CLI.ui.ask("Do you want to import a database file? (y/n) : ")
+    if file_to_upload == "y"
+      file = Capistrano::CLI.ui.ask("Which database file should we import (it must be located in #{default_local_files_path}): ")
+      upload "#{default_local_files_path}/#{file}", "#{file}"
+    end
     create_db_tmp_file = "create_#{db_name}.sql"
     put render("new_db", binding), create_db_tmp_file
     run "mysql -u root -p#{db_root_password} < #{create_db_tmp_file}"
-        
-    run "mysql -u root -p#{db_root_password} #{db_name} < #{file}"
+    if file_to_upload == "y"
+      run "mysql -u root -p#{db_root_password} #{db_name} < #{file}"
+    end
     run "rm #{file} #{create_db_tmp_file}"
   end
 
