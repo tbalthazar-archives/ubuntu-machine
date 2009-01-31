@@ -49,8 +49,9 @@ namespace :mysql do
     run "mysql -u root -p#{db_root_password} < #{create_db_tmp_file}"
     if file_to_upload == "y"
       run "mysql -u root -p#{db_root_password} #{db_name} < #{file}"
+      run "rm #{file}"
     end
-    run "rm #{file} #{create_db_tmp_file}"
+    run "rm #{create_db_tmp_file}"
   end
 
   desc "Install MySQL"
