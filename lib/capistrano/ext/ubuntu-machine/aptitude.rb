@@ -37,15 +37,7 @@ namespace :aptitude do
     # if it must overwrite this file, since it has been modified by OVH. \
     # data =~ /^\*\*\*\sissue/ looks for the interactive prompt to enable you to answer
     sudo 'aptitude hold console-setup -y'
-    sudo 'aptitude safe-upgrade -y', :pty => true do |ch, stream, data|
-      if data =~ /^\*\*\*\sissue/
-        # prompt, and then send the response to the remote process
-        ch.send_data(Capistrano::CLI.password_prompt(data) + "\n")
-      else
-        # use the default handler for all other text
-        Capistrano::Configuration.default_io_proc.call(ch, stream, data)
-       end
-     end
+    sudo_and_watch_prompt("aptitude safe-upgrade -y", /^\*\*\*\sissue/)    
   end
   
   desc <<-DESC

@@ -1,12 +1,24 @@
+require 'net/http'
+
 namespace :ruby do
   desc "Install Ruby 1.8"
   task :install, :roles => :app do
     sudo "aptitude install -y ruby1.8-dev ruby1.8 ri1.8 rdoc1.8 irb1.8 libreadline-ruby1.8 libruby1.8 libopenssl-ruby sqlite3 libsqlite3-ruby1.8"
+    sudo "aptitude install -y libmysql-ruby1.8"
 
     sudo "ln -s /usr/bin/ruby1.8 /usr/bin/ruby"
     sudo "ln -s /usr/bin/ri1.8 /usr/bin/ri"
     sudo "ln -s /usr/bin/rdoc1.8 /usr/bin/rdoc"
     sudo "ln -s /usr/bin/irb1.8 /usr/bin/irb"
+  end
+  
+
+  set :ruby_enterprise_url do
+    Net::HTTP.get('www.rubyenterpriseedition.com', '/download.html').scan(/http:.*\.tar\.gz/).first
+  end
+
+  set :ruby_enterprise_version do
+    "#{ruby_enterprise_url[/(ruby-enterprise.*)(.tar.gz)/, 1]}"
   end
 
   desc "Install Ruby Enterpise Edition"
@@ -15,7 +27,8 @@ namespace :ruby do
     sudo "apt-get install libreadline5-dev -y"
     
     run "test ! -d /opt/#{ruby_enterprise_version}"
-    run "curl -LO http://rubyforge.org/frs/download.php/50087/#{ruby_enterprise_version}.tar.gz"
+    # run "curl -LO http://rubyforge.org/frs/download.php/50087/#{ruby_enterprise_version}.tar.gz"
+    run "curl -LO #{ruby_enterprise_url}"
     run "tar xzvf #{ruby_enterprise_version}.tar.gz"
     run "rm #{ruby_enterprise_version}.tar.gz"
     sudo "./#{ruby_enterprise_version}/installer --auto /opt/#{ruby_enterprise_version}"

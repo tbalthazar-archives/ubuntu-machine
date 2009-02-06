@@ -33,16 +33,8 @@ namespace :utils do
 
   desc "Activate Phusion Passenger Enterprise Edition."
   task :passenger_enterprise, :roles => :gateway do
-    # sudo "passenger-make-enterprisey"
-    sudo '/opt/ruby-enterprise/bin/passenger-make-enterprisey', :pty => true do |ch, stream, data|
-      if data =~ /Key\:/ || data =~ /again\:/
-        # prompt, and then send the response to the remote process
-        ch.send_data(Capistrano::CLI.password_prompt(data) + "\n")
-      else
-        # use the default handler for all other text
-        Capistrano::Configuration.default_io_proc.call(ch, stream, data)
-      end
-    end
+
+    sudo_and_watch_prompt("/opt/ruby-enterprise/bin/passenger-make-enterprisey", [/Key\:/,  /again\:/])    
   end
   
 end

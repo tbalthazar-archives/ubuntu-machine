@@ -5,26 +5,9 @@ namespace :machine do
     set :user_to_create , user
     set :user, 'root'
     
-    
-    run "passwd", :pty => true do |ch, stream, data|
-      if data =~ /Enter new UNIX password/ || data=~ /Retype new UNIX password:/
-        # prompt, and then send the response to the remote process
-        ch.send_data(Capistrano::CLI.password_prompt(data) + "\n")
-      else
-        # use the default handler for all other text
-        Capistrano::Configuration.default_io_proc.call(ch, stream, data)
-      end
-    end
-    
-    run "adduser #{user_to_create}", :pty => true do |ch, stream, data|
-      if data =~ /Enter new UNIX password/ || data=~ /Retype new UNIX password:/ || data=~/\[\]\:/ || data=~/\[y\/N\]/i
-        # prompt, and then send the response to the remote process
-        ch.send_data(Capistrano::CLI.password_prompt(data) + "\n")
-      else
-        # use the default handler for all other text
-        Capistrano::Configuration.default_io_proc.call(ch, stream, data)
-      end
-    end
+    run_and_watch_prompt("passwd", [/Enter new UNIX password/, /Retype new UNIX password:/])
+
+    run_and_watch_prompt("adduser #{user_to_create}", [/Enter new UNIX password/, /Retype new UNIX password:/, /\[\]\:/, /\[y\/N\]/i])
     
     run "echo '#{user_to_create} ALL=(ALL)ALL' >> /etc/sudoers"
     run "echo 'AllowUsers #{user_to_create}' >> /etc/ssh/sshd_config"
@@ -52,14 +35,6 @@ namespace :machine do
   task :change_password do
     user_to_update = Capistrano::CLI.ui.ask("Name of the user whose you want to update the password : ")
     
-    sudo "passwd #{user_to_update}", :pty => true do |ch, stream, data|
-      if data =~ /Enter new UNIX password/ || data=~ /Retype new UNIX password:/
-        # prompt, and then send the response to the remote process
-        ch.send_data(Capistrano::CLI.password_prompt(data) + "\n")
-      else
-        # use the default handler for all other text
-        Capistrano::Configuration.default_io_proc.call(ch, stream, data)
-      end
-    end
+    run_and_watch_prompt("passwd #{user_to_update}", [/Enter new UNIX password/, /Retype new UNIX password:/])
   end
 end
