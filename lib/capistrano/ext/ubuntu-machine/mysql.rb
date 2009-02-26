@@ -52,6 +52,7 @@ namespace :mysql do
     # set a default dummy password for the root user so the installer do not ask interactively for a password
     put render("my.cnf", binding), ".my.cnf"
     sudo "mv .my.cnf /root"
+    sudo "chown root:root /root/.my.cnf"
     
     sudo "aptitude install -y mysql-server mysql-client libmysqlclient15-dev"
     run "mysqladmin -u root password #{db_root_password}"
