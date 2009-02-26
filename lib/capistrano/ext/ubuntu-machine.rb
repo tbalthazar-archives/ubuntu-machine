@@ -6,15 +6,15 @@ end
 #   Capistrano::Configuration.instance.load {load(lib)}   
 # }
 
-Capistrano::Configuration.instance.load {load("apache.rb")}
-Capistrano::Configuration.instance.load {load("aptitude.rb")}
-Capistrano::Configuration.instance.load {load("gems.rb")}
-Capistrano::Configuration.instance.load {load("git.rb")}
-Capistrano::Configuration.instance.load {load("helpers.rb")}
-Capistrano::Configuration.instance.load {load("iptables.rb")}
-Capistrano::Configuration.instance.load {load("machine.rb")}
-Capistrano::Configuration.instance.load {load("mysql.rb")}
-Capistrano::Configuration.instance.load {load("php.rb")}
-Capistrano::Configuration.instance.load {load("ruby.rb")}
-Capistrano::Configuration.instance.load {load("ssh.rb")}
-Capistrano::Configuration.instance.load {load("utils.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/apache.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/aptitude.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/gems.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/git.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/helpers.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/iptables.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/machine.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/mysql.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/php.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/ruby.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/ssh.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/utils.rb")}
