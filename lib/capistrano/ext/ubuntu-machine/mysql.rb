@@ -49,11 +49,10 @@ namespace :mysql do
   task :install, :roles => :db do
     db_root_password = Capistrano::CLI.ui.ask("Choose a MySQL root password : ")
 
-    run "export DEBIAN_FRONTEND=noninteractive"
-    sudo "aptitude install -y mysql-server mysql-client libmysqlclient15-dev"
+    sudo "aptitude install -y mysql-server mysql-client libmysqlclient15-dev"    
     run "mysqladmin -u root password #{db_root_password}"    
   end
-  
+    
   desc "Ask for a MySQL user and change his password"
   task :change_password, :roles => :db do
     user_to_update = Capistrano::CLI.ui.ask("Name of the MySQL user whose you want to update the password : ")
