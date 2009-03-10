@@ -27,8 +27,7 @@ namespace :ruby do
     sudo "apt-get install libreadline5-dev -y"
     
     run "test ! -d /opt/#{ruby_enterprise_version}"
-    # run "curl -LO http://rubyforge.org/frs/download.php/50087/#{ruby_enterprise_version}.tar.gz"
-    run "curl -LO #{ruby_enterprise_url}"
+    run "wget #{ruby_enterprise_url}"
     run "tar xzvf #{ruby_enterprise_version}.tar.gz"
     run "rm #{ruby_enterprise_version}.tar.gz"
     sudo "./#{ruby_enterprise_version}/installer --auto /opt/#{ruby_enterprise_version}"

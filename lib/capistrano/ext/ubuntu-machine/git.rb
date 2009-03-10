@@ -2,7 +2,7 @@ namespace :git do
   desc "Install git"
   task :install, :roles => :app do
     sudo "sudo apt-get build-dep git-core -y"
-    run "curl -O http://kernel.org/pub/software/scm/git/#{git_version}.tar.gz"
+    run "wget http://kernel.org/pub/software/scm/git/#{git_version}.tar.gz"
     run "tar xvzf #{git_version}.tar.gz"
     run "cd #{git_version}"
     run "cd #{git_version} && ./configure"
