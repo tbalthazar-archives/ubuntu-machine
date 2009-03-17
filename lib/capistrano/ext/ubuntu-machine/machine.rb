@@ -31,6 +31,7 @@ namespace :machine do
     mysql.install
     apache.install
     ruby.install
+    postfix.install
     gems.install_rubygems
     ruby.install_enterprise
     ruby.install_passenger

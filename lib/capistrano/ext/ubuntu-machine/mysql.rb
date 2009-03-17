@@ -49,7 +49,7 @@ namespace :mysql do
   task :install, :roles => :db do
     db_root_password = Capistrano::CLI.ui.ask("Choose a MySQL root password : ")
 
-    sudo "aptitude install -y mysql-server mysql-client libmysqlclient15-dev"    
+    sudo "apt-get install -y mysql-server mysql-client libmysqlclient15-dev"    
     run "mysqladmin -u root password #{db_root_password}"    
   end
     

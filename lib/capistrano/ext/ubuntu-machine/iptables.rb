@@ -6,7 +6,7 @@ namespace :iptables do
     http://articles.slicehost.com/2008/4/25/ubuntu-hardy-setup-page-1
   DESC
   task :configure, :roles => :gateway do
-    sudo "aptitude install iptables -y"
+    sudo "apt-get install iptables -y"
     put render("iptables", binding), "iptables.up.rules"
     sudo "mv iptables.up.rules /etc/iptables.up.rules"
     

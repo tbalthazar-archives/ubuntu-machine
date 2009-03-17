@@ -15,6 +15,7 @@ Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-
 Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/machine.rb")}
 Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/mysql.rb")}
 Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/php.rb")}
+Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/postfix.rb")}
 Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/ruby.rb")}
 Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/ssh.rb")}
 Capistrano::Configuration.instance.load {load("#{File.dirname(__FILE__)}/ubuntu-machine/utils.rb")}

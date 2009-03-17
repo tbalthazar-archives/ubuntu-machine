@@ -3,8 +3,8 @@ require 'net/http'
 namespace :ruby do
   desc "Install Ruby 1.8"
   task :install, :roles => :app do
-    sudo "aptitude install -y ruby1.8-dev ruby1.8 ri1.8 rdoc1.8 irb1.8 libreadline-ruby1.8 libruby1.8 libopenssl-ruby sqlite3 libsqlite3-ruby1.8"
-    sudo "aptitude install -y libmysql-ruby1.8"
+    sudo "apt-get install -y ruby1.8-dev ruby1.8 ri1.8 rdoc1.8 irb1.8 libreadline-ruby1.8 libruby1.8 libopenssl-ruby sqlite3 libsqlite3-ruby1.8"
+    sudo "apt-get install -y libmysql-ruby1.8"
 
     sudo "ln -s /usr/bin/ruby1.8 /usr/bin/ruby"
     sudo "ln -s /usr/bin/ri1.8 /usr/bin/ri"
@@ -20,6 +20,11 @@ namespace :ruby do
   set :ruby_enterprise_version do
     "#{ruby_enterprise_url[/(ruby-enterprise.*)(.tar.gz)/, 1]}"
   end
+  
+  set :passenger_version do
+    `gem list passenger$ -r`.gsub(/[\n|\s|passenger|(|)]/,"")
+  end
+  
 
   desc "Install Ruby Enterpise Edition"
   task :install_enterprise, :roles => :app do
@@ -48,12 +53,12 @@ namespace :ruby do
     sudo "gem install rake"
 
     sudo "apt-get install apache2-mpm-prefork -y"
-    sudo "aptitude install libapr1-dev -y"
+    sudo "apt-get install libapr1-dev -y"
     sudo "apt-get install apache2-prefork-dev -y"
 
     sudo "/opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/gem install passenger"
     
-    run "echo -en '\n\n\n\n\n' | sudo /opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module"
+    run "sudo /opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module --auto"
     
     put render("passenger.load", binding), "/home/#{user}/passenger.load"
     put render("passenger.conf", binding), "/home/#{user}/passenger.conf"
@@ -64,5 +69,5 @@ namespace :ruby do
     sudo "a2enmod passenger"
     apache.force_reload
   end 
-   
+     
 end

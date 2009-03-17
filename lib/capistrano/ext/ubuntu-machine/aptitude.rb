@@ -7,7 +7,7 @@ namespace :aptitude do
     http://articles.slicehost.com/2007/11/6/ubuntu-gutsy-setup-page-2
   DESC
   task :update, :roles => :app do
-    sudo "aptitude update"
+    sudo "apt-get update"
   end
 
   desc "Alias for 'aptitude:safe_upgrade'"
@@ -31,12 +31,13 @@ namespace :aptitude do
     http://articles.slicehost.com/2007/11/6/ubuntu-gutsy-setup-page-2
   DESC
   task :safe_upgrade, :roles => :app do
-    # sudo "aptitude safe-upgrade -y", :pty => true
+    
+    # to prevent interactive mode to block the install script
+    sudo 'aptitude hold console-setup -y'
     
     # By default, OVH replace the original /etc/issue. The safe_upgrade will then ask \
     # if it must overwrite this file, since it has been modified by OVH. \
     # data =~ /^\*\*\*\sissue/ looks for the interactive prompt to enable you to answer
-    sudo 'aptitude hold console-setup -y'
     sudo_and_watch_prompt("aptitude safe-upgrade -y", /^\*\*\*\sissue/)    
   end
   
@@ -64,7 +65,7 @@ namespace :aptitude do
   DESC
   task :install, :roles => :app do
     package = Capistrano::CLI.ui.ask("Which package should we install: ")
-    sudo "aptitude install #{package}"
+    sudo "apt-get install #{package}"
   end
 
   desc <<-DESC
@@ -73,7 +74,7 @@ namespace :aptitude do
   DESC
   task :uninstall, :roles => :app do
     package = Capistrano::CLI.ui.ask("Which package should we uninstall: ")
-    sudo "aptitude remove #{package}"
+    sudo "apt-get remove #{package}"
   end
   
   desc <<-DESC
@@ -90,6 +91,6 @@ namespace :aptitude do
     sudo "/usr/sbin/update-locale LANG=en_GB.UTF-8"
     safe_upgrade
     full_upgrade
-    sudo "aptitude install -y build-essential"
+    sudo "apt-get install -y build-essential"
   end
 end
