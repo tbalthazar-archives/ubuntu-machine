@@ -56,18 +56,34 @@ namespace :ruby do
     sudo "apt-get install libapr1-dev -y"
     sudo "apt-get install apache2-prefork-dev -y"
 
+    # call the upgrade_passenger task
+    upgrade_passenger
+    # sudo "/opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/gem install passenger"
+    # run "sudo /opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module --auto"
+    # 
+    # put render("passenger.load", binding), "/home/#{user}/passenger.load"
+    # put render("passenger.conf", binding), "/home/#{user}/passenger.conf"
+    # 
+    # sudo "mv /home/#{user}/passenger.load /etc/apache2/mods-available/"
+    # sudo "mv /home/#{user}/passenger.conf /etc/apache2/mods-available/"
+    # 
+    # sudo "a2enmod passenger"
+    # apache.force_reload
+  end 
+  
+  desc "Upgrade Phusion Passenger"
+  task :upgrade_passenger, :roles => :app do
     sudo "/opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/gem install passenger"
-    
     run "sudo /opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module --auto"
     
     put render("passenger.load", binding), "/home/#{user}/passenger.load"
     put render("passenger.conf", binding), "/home/#{user}/passenger.conf"
-
+   
     sudo "mv /home/#{user}/passenger.load /etc/apache2/mods-available/"
     sudo "mv /home/#{user}/passenger.conf /etc/apache2/mods-available/"
-
+    
     sudo "a2enmod passenger"
     apache.force_reload
-  end 
+  end
      
 end
