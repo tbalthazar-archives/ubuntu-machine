@@ -64,26 +64,15 @@ namespace :ruby do
   task :upgrade_passenger, :roles => :app do
     sudo "/opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/gem install passenger"
     run "sudo /opt/#{ruby_enterprise_version}/bin/ruby /opt/#{ruby_enterprise_version}/bin/passenger-install-apache2-module --auto"
-    
+
     put render("passenger.load", binding), "/home/#{user}/passenger.load"
     put render("passenger.conf", binding), "/home/#{user}/passenger.conf"
    
-    sudo "mv /home/#{user}/passenger.load /etc/apache2/mods-available/"
-    sudo "mv /home/#{user}/passenger.conf /etc/apache2/mods-available/"
+    sudo "cp /home/#{user}/passenger.load /etc/apache2/mods-available/"
+    sudo "cp /home/#{user}/passenger.conf /etc/apache2/mods-available/"
     
     sudo "a2enmod passenger"
     apache.force_reload
   end
-  
-  task :tmp, :roles => :app do
-    put render("passenger.load", binding), "/home/#{user}/passenger.load"
-    put render("passenger.conf", binding), "/home/#{user}/passenger.conf"
-
-    sudo "mv /home/#{user}/passenger.load /etc/apache2/mods-available/"
-    sudo "mv /home/#{user}/passenger.conf /etc/apache2/mods-available/"
-
-    sudo "a2enmod passenger"
-    apache.force_reload
-  end
-     
+       
 end
