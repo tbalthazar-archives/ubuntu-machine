@@ -68,8 +68,8 @@ namespace :ruby do
     put render("passenger.load", binding), "/home/#{user}/passenger.load"
     put render("passenger.conf", binding), "/home/#{user}/passenger.conf"
    
-    sudo "cp /home/#{user}/passenger.load /etc/apache2/mods-available/"
-    sudo "cp /home/#{user}/passenger.conf /etc/apache2/mods-available/"
+    sudo "mv /home/#{user}/passenger.load /etc/apache2/mods-available/"
+    sudo "mv /home/#{user}/passenger.conf /etc/apache2/mods-available/"
     
     sudo "a2enmod passenger"
     apache.force_reload
